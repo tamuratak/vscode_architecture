@@ -1,5 +1,5 @@
 
-## Architecture of VS Code Remote
+# Architecture of VS Code Remote
 
 ```mermaid
 flowchart TB
@@ -39,11 +39,10 @@ flowchart TB
     Extension -- (Varies) --- Debugger
 ```
 
+## Overview
 
-## Links
+The role of the VS Code Remote extension is to establish a connection with the remote machine using SSH, download the VS Code Server on the remote, start the server, and establish port forwarding from the local machine. You may refer to an alternative implementation that is open-source:
 
 - https://github.com/jeanp413/open-remote-ssh/tree/master
-
-The role of the VS Code Remote extension is to establish a connection with the remote machine using SSH, download the VS Code Server on the remote, start the server, and establish port forwarding from the local machine. 
 
 A connection from the renderer process to each process on the remote machine is established via SSH port forwarding and VS Code Server.

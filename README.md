@@ -1,5 +1,5 @@
 
-## Architecture of VS Code
+# Architecture of VS Code
 
 ```mermaid
 flowchart TB
