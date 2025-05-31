@@ -8,20 +8,20 @@ flowchart TB
         workbench.html
     end
     SharedProcess[Shared Process]
+    FileWatcherProcess@{ shape: procs, label: "File Watcher Process<br/>(parcel or Node.js watcher)" }
     subgraph ExtensionHostProcess  [ExtensionHost Process]
         Extension@{ shape: procs }
     end
     SearchProcess@{ shape: procs, label: "Search Process<br/>(ripgrep)" }
     PTYHostProcess@{ label: "PTY Host Process<br/>(node-pty)" }
     TerminalProcess@{ shape: procs, label: "Terminal Process" }
-    FileWatcherProcess@{ shape: procs, label: "File Watcher Process<br/>(parcel or Node.js watcher)" }
     LanguageServer@{ shape: procs, label: "Language Server" }
     Debugger@{ shape: procs }
     MainProcess -- Electron IPC --- SharedProcess
     MainProcess -- Electron IPC --- RendererProcess
-    RendererProcess -- MessagePort IPC --- SharedProcess
-    RendererProcess -- MessagePort IPC --- ExtensionHostProcess
+    SharedProcess -- MessagePort IPC --- RendererProcess
     RendererProcess -- MessagePort IPC --- FileWatcherProcess
+    RendererProcess -- MessagePort IPC --- ExtensionHostProcess
     RendererProcess -- MessagePort IPC --- PTYHostProcess
     PTYHostProcess -- PTY IPC --- TerminalProcess
     ExtensionHostProcess -- Node.js IPC --- SearchProcess
