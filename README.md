@@ -64,6 +64,7 @@ The source code organization of VS Code is described in detail below:
 - https://github.com/microsoft/vscode/wiki/Source-Code-Organization
 
 The implementation of the editor part, located in `src/vs/editor/`, and the implementation of various features, located in `src/vs/workbench/`, make up the majority of the code.
+In `src/vs/platform`, services that do not depend on either `editor` or `workbench` are located, such as sharedProcess.
 
 | dir | lines (exclude tests) |
 | --- | --- |
