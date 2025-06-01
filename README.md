@@ -59,6 +59,21 @@ The main process creates the renderer process, search process, extension host, f
 
 ## Source Code Organization
 
+The source code organization of VS Code is described in detail below:
+
+- https://github.com/microsoft/vscode/wiki/Source-Code-Organization
+
+The implementation of the editor part, located in `src/vs/editor/`, and the implementation of various features, located in `src/vs/workbench/`, make up the majority of the code.
+
+| dir | lines (exclude tests) |
+| --- | --- |
+| src/vs/base/ | 91579 |
+| src/vs/code/ | 5143 |
+| src/vs/editor/ | 191646 |
+| src/vs/platform/ | 112612 |
+| src/vs/server/ | 4465 | 
+| src/vs/workbench/ | 688938 |
+
 - workbench/, electron-sandbox/ = renderer process
 
 workbench で node のときはだいたい extension host で実行される. その場合 extension host のその機能は
@@ -66,6 +81,6 @@ workbench (renderer) から呼び出せるようになっている.
 
 ## Links
 
-- https://github.com/microsoft/vscode/wiki/Source-Code-Organization
+
 - https://code.visualstudio.com/blogs/2022/11/28/vscode-sandbox
 - https://code.visualstudio.com/blogs/2022/11/28/vscode-sandbox#_moving-processes-out-of-the-renderer
