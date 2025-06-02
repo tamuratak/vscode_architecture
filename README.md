@@ -77,6 +77,8 @@ In `src/vs/platform`, services that do not depend on either `editor` or `workben
 | src/vs/server/ | 4465 | 
 | src/vs/workbench/ | 688938 |
 
+The following numbers are aggregated by recursively tracing the imports with a script, so they may not be accurate.
+
 |     | total lines (approx) |
 | --- | --- |
 | Main Process | 98000 |
