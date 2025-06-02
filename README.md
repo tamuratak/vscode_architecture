@@ -86,6 +86,13 @@ The following numbers are aggregated by recursively tracing the imports with a s
 | Renderer Process | 310000 |
 | ExtensionHost Process | 240000 |
 
+When `browser/` and `electron-sandbox/` are parallel as shown below, for that feature, the code from `browser/` runs in the browser, while the code from `electron-sandbox/` runs on the desktop. If only `browser/` exists, the code from `browser/` will run on the desktop as well.
+
+```
+src/vs/path/to/feature/browser
+src/vs/path/to/feature/electron-sandbox
+```
+
 ## Links
 
 
