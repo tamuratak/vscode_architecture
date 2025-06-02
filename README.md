@@ -54,8 +54,10 @@ The main process creates the renderer process, search process, extension host, f
   - [src/vs/workbench/contrib/debug/node/debugAdapter.ts#L221](https://github.com/Microsoft/vscode/blob/31092ac1a0f9e68026cd0796f184fd3dfe978069/src/vs/workbench/contrib/debug/node/debugAdapter.ts#L221)
 
 ### How MessagePorts transfered
+
+Using the Electron API's [utilityProcess.fork](https://www.electronjs.org/docs/latest/api/utility-process#utilityprocessforkmodulepath-args-options) to generate a process allows you to transfer a MessagePort via the [postMessage](https://www.electronjs.org/docs/latest/api/utility-process#childpostmessagemessage-transfer) method. This enables the transfer of MessagePort from the main process to each process. By sending a unique string such as 'vscode:startExtensionHostMessagePortResult' with the MessagePort, each process can identify the MessagePort.
+
 - [src/vs/platform/utilityProcess/electron-main/utilityProcess.ts#L427](https://github.com/Microsoft/vscode/blob/708b6aa379c2c9d12c65123c8934ca5a6a29046d/src/vs/platform/utilityProcess/electron-main/utilityProcess.ts#L427)
-  - 'vscode:startExtensionHostMessagePortResult' のような文字列(responseChannel)と通信用の port を渡す
 
 ## Source Code Organization
 
