@@ -77,6 +77,13 @@ In `src/vs/platform`, services that do not depend on either `editor` or `workben
 | src/vs/server/ | 4465 | 
 | src/vs/workbench/ | 688938 |
 
+|     | total lines (approx) |
+| --- | --- |
+| Main Process | 98000 |
+| Shared Process | 95000 |
+| Renderer Process | 310000 |
+| ExtensionHost Process | 240000 |
+
 - workbench/, electron-sandbox/ = renderer process
 
 workbench で node のときはだいたい extension host で実行される. その場合 extension host のその機能は
