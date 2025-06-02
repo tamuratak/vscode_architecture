@@ -86,11 +86,6 @@ The following numbers are aggregated by recursively tracing the imports with a s
 | Renderer Process | 310000 |
 | ExtensionHost Process | 240000 |
 
-- workbench/, electron-sandbox/ = renderer process
-
-workbench で node のときはだいたい extension host で実行される. その場合 extension host のその機能は
-workbench (renderer) から呼び出せるようになっている.
-
 ## Links
 
 
