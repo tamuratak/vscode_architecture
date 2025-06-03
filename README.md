@@ -59,7 +59,7 @@ Using the Electron API's [utilityProcess.fork](https://www.electronjs.org/docs/l
 
 - [src/vs/platform/utilityProcess/electron-main/utilityProcess.ts#L427](https://github.com/Microsoft/vscode/blob/708b6aa379c2c9d12c65123c8934ca5a6a29046d/src/vs/platform/utilityProcess/electron-main/utilityProcess.ts#L427)
 
-## Source Code Organization
+## Source code organization
 
 The source code organization of VS Code is described in detail below:
 
@@ -68,16 +68,16 @@ The source code organization of VS Code is described in detail below:
 The implementation of the editor part, located in `src/vs/editor/`, and the implementation of various features, located in `src/vs/workbench/`, make up the majority of the code.
 In `src/vs/platform`, services that do not depend on either `editor` or `workbench` are located, such as sharedProcess.
 
-| dir | lines (exclude tests) |
-| --- | --- |
-| src/vs/base/ | 91579 |
-| src/vs/code/ | 5143 |
-| src/vs/editor/ | 191646 |
-| src/vs/platform/ | 112612 |
-| src/vs/server/ | 4465 | 
-| src/vs/workbench/ | 688938 |
+| dir | lines (exclude tests) |  |
+| --- | --- | --- |
+| src/vs/base/ | 91579 |  |
+| src/vs/code/ | 5143 | The main function of each process is defined. |
+| src/vs/editor/ | 191646 | Renderer Process (the Monaco editor) |
+| src/vs/platform/ | 112612 | Main Process, SharedProcess |
+| src/vs/server/ | 4465 | VS Code Server |
+| src/vs/workbench/ | 688938 | Renderer Process, ExtensionHost Process, File Watcher Process |
 
-The following numbers are aggregated by recursively tracing the imports with a script, so they may not be accurate.
+The following numbers are aggregated by recursively tracing the imports with a script, so they may not be accurate. It counts the same code multiple times and counts unused code as well. The code for the Extension Host Process accounts for about half of this number.
 
 |     | total lines (approx) |
 | --- | --- |
@@ -93,8 +93,34 @@ src/vs/path/to/feature/browser
 src/vs/path/to/feature/electron-sandbox
 ```
 
-## Links
+standalone == The Monaco editor
 
+### `src/vs/workbench/` directory organization
+
+- `src/vs/workbench/api/`
+  - ExtensionHost
+- `src/vs/workbench/contrib/`
+  - They provides contributions. Here, a contribution refers to non-persistent objects and the functionalities they offer. registerWorkbenchContribution2, Registry, Action, を使って登録する。
+- `src/vs/workbench/services/`
+  - They provide services. Here, a service refers to persistent objects and the functionalities they offer. Persistent objects are those that continue to exist until the application is terminated.
+
+src/vs/platform/registry/common/platform.ts
+
+workbench/services/ で contribution を定義したり,
+workbench/contrib/ で service を定義していることがある。
+
+## Dependency Injection and TypeScript decorators
+
+Dependency Injection (DI) with [TypeScript decorators](https://www.typescriptlang.org/docs/handbook/decorators.html) is widely used. It is explained in detail below:
+
+- https://github.com/microsoft/vscode/wiki/Source-Code-Organization#dependency-injection
+
+One of the purposes of using DI is to create services in the correct order. When services depend on each other, it is necessary to generate objects providing those services in the appropriate order.
+The creation of objects is handled by the [InstantiationService](https://github.com/Microsoft/vscode/blob/a5f52063e4622bc318d9c550a682dc5b35ef7f33/src/vs/platform/instantiation/common/instantiationService.ts#L28) class. Each process has a unique InstantiationService object, which is created at the very beginning of the startup of each process. See an [example](https://github.com/Microsoft/vscode/blob/8cfb2b0e6c8dd80523711236d89dbead0338420b/src/vs/workbench/browser/workbench.ts#L196) of Renderer Process.
+
+
+
+## Links
 
 - https://code.visualstudio.com/blogs/2022/11/28/vscode-sandbox
 - https://code.visualstudio.com/blogs/2022/11/28/vscode-sandbox#_moving-processes-out-of-the-renderer
