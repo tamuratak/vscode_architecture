@@ -118,7 +118,34 @@ Dependency Injection (DI) with [TypeScript decorators](https://www.typescriptlan
 One of the purposes of using DI is to create services in the correct order. When services depend on each other, it is necessary to generate objects providing those services in the appropriate order.
 The creation of objects is handled by the [InstantiationService](https://github.com/Microsoft/vscode/blob/a5f52063e4622bc318d9c550a682dc5b35ef7f33/src/vs/platform/instantiation/common/instantiationService.ts#L28) class. Each process has a unique InstantiationService object, which is created at the very beginning of the startup of each process. See an [example](https://github.com/Microsoft/vscode/blob/8cfb2b0e6c8dd80523711236d89dbead0338420b/src/vs/workbench/browser/workbench.ts#L196) of Renderer Process.
 
+The following is the typical example of consuming a service:
+```ts
+export class SomeClass extends Disposable {
+  constructor(
+    private readonly arg: ArgTypeA,
+    @IContextKeyService private _contextKeyService: IContextKeyService,
+    @IInstantiationService private _instantiationService: IInstantiationService,
+  ) {
+```
 
+`@IContextKeyService` is a decorator intentionally defined to share the same identifier as the `IContextKeyService` interface for convenience. See an [example](https://github.com/Microsoft/vscode/blob/7d2f5bb1aee0ce20c6259d96b0d81f0aa9f9a0db/src/vs/platform/contextkey/common/contextkey.ts#L2035-L2036).
+
+When creating an object of `SomeClass`, the `createInstance` method is used:
+```ts
+instantiationService.createInstance(SomeClass, arg)
+```
+
+When the `createInstance` method is called, it generates objects such as the `IContextKeyService` object required by the constructor of the `SomeClass` class, if necessary. Usually, these objects are already created and held. The `createInstance` method adds the `IContextKeyService` object and others as arguments to call the constructor of `SomeClass`. The above decorator informs the `instantiationService` about the additional objects required for the constructor.
+
+When you want to create an object within a method of `SomeClass`, you call `this._instantiationService.createInstance`.
+
+The `registerSingleton` method is used to register the identifier and implementation class with the instantiationService.
+The `registerSingleton` method stores these in a module scope variable. 
+This method must be called when the modules are loaded and before the `instantiationService` object is created. See an [example](https://github.com/Microsoft/vscode/blob/74a3f54c07603e67e5eba6a561f8048f269fade8/src/vs/workbench/workbench.common.main.ts#L169-L170).
+
+```ts
+registerSingleton(IContextKeyService, ContextKeyService, InstantiationType.Delayed);
+```
 
 ## Links
 
