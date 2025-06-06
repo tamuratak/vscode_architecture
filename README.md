@@ -147,6 +147,9 @@ This method must be called when the modules are loaded and before the `instantia
 registerSingleton(IContextKeyService, ContextKeyService, InstantiationType.Delayed);
 ```
 
+Besides using the `registerSingleton` method, a collection of services can be generated together when the `instantiationService` object is created.
+See an [example](https://github.com/Microsoft/vscode/blob/c588828980a0a8abad76f87a73a2819a27be1b8c/src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts#L351).
+
 ## Links
 
 - https://code.visualstudio.com/blogs/2022/11/28/vscode-sandbox
