@@ -104,7 +104,9 @@ The "standalone" in `src/vs/editor/standalone` refers to the Monaco editor.
 - `src/vs/workbench/services/`
   - They provide services. Here, a service refers to persistent objects and the functionalities they offer. Persistent objects are those that continue to exist until the application is terminated.
 
-Contributions and services are very similar, but the difference lies in whether the life-cycle is associated with specific objects or is persistent. Notice that  Contributions may be exceptionally defined in `workbench/services/`, and similarly, services may be defined in `workbench/contrib/`.
+Contributions and services are very similar, but the difference lies in whether the life-cycle is associated with specific objects or is persistent. Contributions are instantiated together with their associated objects and held by those objects. Services are held by the instantiationService after being created. In both cases, the instantiationService handles the creation.
+
+Notice that  Contributions may be exceptionally defined in `workbench/services/`, and similarly, services may be defined in `workbench/contrib/`.
 
 src/vs/platform/registry/common/platform.ts
 
