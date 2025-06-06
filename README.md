@@ -93,7 +93,7 @@ src/vs/path/to/feature/browser
 src/vs/path/to/feature/electron-sandbox
 ```
 
-standalone == The Monaco editor
+The "standalone" in `src/vs/editor/standalone` refers to the Monaco editor.
 
 ### `src/vs/workbench/` directory organization
 
