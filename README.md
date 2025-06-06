@@ -100,14 +100,13 @@ standalone == The Monaco editor
 - `src/vs/workbench/api/`
   - ExtensionHost
 - `src/vs/workbench/contrib/`
-  - They provides contributions. Here, a contribution refers to non-persistent objects and the functionalities they offer. registerWorkbenchContribution2, Registry, Action, を使って登録する。
+  - They provides contributions. Here, a contribution refers to non-persistent objects and the functionalities they offer. The life-cycle is associated with specific objects, and depending on the associated target, it is referred to as WorkbenchContribution, EditorContribution, and so on. 
 - `src/vs/workbench/services/`
   - They provide services. Here, a service refers to persistent objects and the functionalities they offer. Persistent objects are those that continue to exist until the application is terminated.
 
-src/vs/platform/registry/common/platform.ts
+Contributions and services are very similar, but the difference lies in whether the life-cycle is associated with specific objects or is persistent. Notice that  Contributions may be exceptionally defined in `workbench/services/`, and similarly, services may be defined in `workbench/contrib/`.
 
-workbench/services/ で contribution を定義したり,
-workbench/contrib/ で service を定義していることがある。
+src/vs/platform/registry/common/platform.ts
 
 ## Dependency Injection and TypeScript decorators
 
