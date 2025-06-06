@@ -104,7 +104,7 @@ The "standalone" in `src/vs/editor/standalone` refers to the Monaco editor.
 - `src/vs/workbench/services/`
   - They provide services. Here, a service refers to persistent objects and the functionalities they offer. Persistent objects are those that continue to exist until the application is terminated.
 
-Contributions and services are very similar, but the difference lies in whether the life-cycle is associated with specific objects or is persistent. Contributions are instantiated together with their associated objects and held by those objects. Services are held by the instantiationService after being created. In both cases, the instantiationService handles the creation.
+Contributions and services are very similar, but the difference lies in whether the life-cycle is associated with specific objects or is persistent. Contributions are instantiated together with their associated objects and held by those objects. Services are held by the `instantiationService` after being created. In both cases, the `instantiationService` handles the creation.
 
 Notice that  Contributions may be exceptionally defined in `workbench/services/`, and similarly, services may be defined in `workbench/contrib/`.
 
@@ -117,7 +117,7 @@ Dependency Injection (DI) with [TypeScript decorators](https://www.typescriptlan
 - https://github.com/microsoft/vscode/wiki/Source-Code-Organization#dependency-injection
 
 One of the purposes of using DI is to create services in the correct order. When services depend on each other, it is necessary to generate objects providing those services in the appropriate order.
-The creation of objects is handled by the [InstantiationService](https://github.com/Microsoft/vscode/blob/a5f52063e4622bc318d9c550a682dc5b35ef7f33/src/vs/platform/instantiation/common/instantiationService.ts#L28) class. Each process has a unique InstantiationService object, which is created at the very beginning of the startup of each process. See an [example](https://github.com/Microsoft/vscode/blob/8cfb2b0e6c8dd80523711236d89dbead0338420b/src/vs/workbench/browser/workbench.ts#L196) of Renderer Process.
+The creation of objects is handled by the [InstantiationService](https://github.com/Microsoft/vscode/blob/a5f52063e4622bc318d9c550a682dc5b35ef7f33/src/vs/platform/instantiation/common/instantiationService.ts#L28) class. Each process has a unique `InstantiationService` object, which is created at the very beginning of the startup of each process. See an [example](https://github.com/Microsoft/vscode/blob/8cfb2b0e6c8dd80523711236d89dbead0338420b/src/vs/workbench/browser/workbench.ts#L196) of Renderer Process.
 
 The following is the typical example of consuming a service:
 ```ts
@@ -140,7 +140,7 @@ When the `createInstance` method is called, it generates objects such as the `IC
 
 When you want to create an object within a method of `SomeClass`, you call `this._instantiationService.createInstance`.
 
-The `registerSingleton` method is used to register the identifier and implementation class with the instantiationService.
+The `registerSingleton` method is used to register the identifier and implementation class with the `instantiationService`.
 The `registerSingleton` method stores these in a module scope variable. 
 This method must be called when the modules are loaded and before the `instantiationService` object is created. See an [example](https://github.com/Microsoft/vscode/blob/74a3f54c07603e67e5eba6a561f8048f269fade8/src/vs/workbench/workbench.common.main.ts#L169-L170).
 
