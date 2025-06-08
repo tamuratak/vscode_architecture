@@ -151,6 +151,61 @@ registerSingleton(IContextKeyService, ContextKeyService, InstantiationType.Delay
 Besides using the `registerSingleton` method, a collection of services can be generated together when the `instantiationService` object is created.
 See an [example](https://github.com/Microsoft/vscode/blob/c588828980a0a8abad76f87a73a2819a27be1b8c/src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts#L351).
 
+## RPC (Remote Procedure Call)
+
+VS Code uses RPC for communication between its internal processes. Any process can act as an RPC client and can also serve as a server; typically, the main process and the shared process operate as servers. TypeScript types shared between the client and server process are directly used as the RPC interface definition. There is no dynamic service discovery in this system. The channel names (service identifiers) are hardcoded in the source code.
+
+When you want to call a method on a service in another process, you obtain a `Channel` for a service using its channel name. A Channel is a combination of the service's identifier, the channel name (`channelName`), and the MessagePort. The client then uses the `channel.call` method, which packages the channel name, the method name, and the arguments into an array: `[channelName, methodName, args]`. This array is then sent over the MessagePort using `postMessage`.
+
+### Request Routing
+
+On the service process side, a ChannelServer listens for incoming messages on the MessagePort. When it receives a message, it looks at the `channelName` to determine which service should handle the request. The ChannelServer then forwards the request to the appropriate ServerChannel, which is directly associated with a specific service implementation.
+
+- `ServerChannel`: Each ServerChannel is mapped one-to-one with a service. It knows how to invoke the correct method on the service with the provided arguments.
+- `ChannelServer`: Maintains a mapping from channel names (channelName) to ServerChannels, allowing it to route requests to the correct service.
+
+### Sequence Example
+
+Here’s how a typical RPC call flows:
+
+1. The client obtains a Channel for a service using its channel name.
+2. The client calls a method on the Channel, which sends `[channelName, methodName, args]` over the MessagePort.
+3. The ChannelServer in the service process receives the message, looks up the ServerChannel for chName, and forwards the call.
+4. The ServerChannel invokes the requested method on the actual service.
+5. The result is sent back through the same path to the client.
+
+```mermaid
+sequenceDiagram
+    box Client Process
+        participant SomeClass
+        participant ChannelClient
+        participant Channel as Channel<br>(chName + MessagePort)
+    end    
+    box Service Process
+        participant ChannelServer
+        participant ServerChannel
+        participant Service
+    end
+    SomeClass -->> ChannelClient: getChannel(chName)
+    ChannelClient --) SomeClass: Channel
+    SomeClass -->> Channel: [methodName, args]
+    Channel -->> ChannelServer: [chName, methodName, args]
+    ChannelServer -->> ServerChannel: [methodName, args]
+    ServerChannel -->> Service: method(args)
+    Service --) ServerChannel: result
+    ServerChannel --) ChannelServer: result
+    ChannelServer --) Channel: result
+    Channel --) SomeClass: result
+```
+
+### Links
+
+- ChannelServer https://github.com/Microsoft/vscode/blob/2984f68510d7786386c43c992ef0c5d794493837/src/vs/base/parts/ipc/common/ipc.ts#L330
+- ServerChannel
+- fromService https://github.com/Microsoft/vscode/blob/2984f68510d7786386c43c992ef0c5d794493837/src/vs/base/parts/ipc/common/ipc.ts#L1110
+- toService https://github.com/Microsoft/vscode/blob/2984f68510d7786386c43c992ef0c5d794493837/src/vs/base/parts/ipc/common/ipc.ts#L1188
+
+
 ## Links
 
 - https://code.visualstudio.com/blogs/2022/11/28/vscode-sandbox
