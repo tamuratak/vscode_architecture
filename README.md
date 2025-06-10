@@ -155,7 +155,7 @@ See an [example](https://github.com/Microsoft/vscode/blob/c588828980a0a8abad76f8
 
 VS Code uses RPC for communication between its internal processes. Any process can act as an RPC client and can also serve as a server; typically, the main process and the shared process operate as servers. TypeScript types shared between the client and server process are directly used as the RPC interface definition. There is no dynamic service discovery in this system. The channel names (service identifiers) are hardcoded in the source code.
 
-When you want to call a method on a service in another process, you obtain a `Channel` for a service using its channel name. A Channel is a combination of the service's identifier, the channel name (`channelName`), and the MessagePort. The client then uses the `channel.call` method, which packages the channel name, the method name, and the arguments into an array: `[channelName, methodName, args]`. This array is then sent over the MessagePort using `postMessage`.
+When you want to call a method on a service in another process, you obtain a `Channel` for a service using its channel name. A Channel is a combination of the service's identifier, i.e. the channel name (`channelName`), and the MessagePort. The client then uses the `channel.call` method, which packages the channel name, the method name, and the arguments into an array: `[channelName, methodName, args]`. This array is then sent over the MessagePort using `postMessage`.
 
 ### Request Routing
 
