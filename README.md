@@ -162,7 +162,7 @@ When you want to call a method on a service in another process, you obtain a `Ch
 On the service process side, a ChannelServer listens for incoming messages on the MessagePort. When it receives a message, it looks at the `channelName` to determine which service should handle the request. The ChannelServer then forwards the request to the appropriate ServerChannel, which is directly associated with a specific service implementation.
 
 - `ServerChannel`: Each ServerChannel is mapped one-to-one with a service. It knows how to invoke the correct method on the service with the provided arguments.
-- `ChannelServer`: Maintains a mapping from channel names (channelName) to ServerChannels, allowing it to route requests to the correct service.
+- [`ChannelServer`](https://github.com/Microsoft/vscode/blob/2984f68510d7786386c43c992ef0c5d794493837/src/vs/base/parts/ipc/common/ipc.ts#L330): Maintains a mapping from channel names (channelName) to ServerChannels, allowing it to route requests to the correct service.
 
 ### Sequence Example
 
@@ -200,8 +200,6 @@ sequenceDiagram
 
 ### Links
 
-- ChannelServer https://github.com/Microsoft/vscode/blob/2984f68510d7786386c43c992ef0c5d794493837/src/vs/base/parts/ipc/common/ipc.ts#L330
-- ServerChannel
 - fromService https://github.com/Microsoft/vscode/blob/2984f68510d7786386c43c992ef0c5d794493837/src/vs/base/parts/ipc/common/ipc.ts#L1110
 - toService https://github.com/Microsoft/vscode/blob/2984f68510d7786386c43c992ef0c5d794493837/src/vs/base/parts/ipc/common/ipc.ts#L1188
 
