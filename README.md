@@ -168,8 +168,8 @@ On the service process side, a ChannelServer listens for incoming messages on th
 
 Here’s how a typical RPC call flows:
 
-1. The client obtains a Channel for a service using its channel name.
-2. The client calls a method on the Channel, which sends `[channelName, methodName, args]` over the MessagePort.
+1. A Channel for a service is set up using its channel name.
+2. A method is invoked on the Channel, which sends `[channelName, methodName, args]` over the MessagePort.
 3. The ChannelServer in the service process receives the message, looks up the ServerChannel for chName, and forwards the call.
 4. The ServerChannel invokes the requested method on the actual service.
 5. The result is sent back through the same path to the client.
