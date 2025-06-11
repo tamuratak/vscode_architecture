@@ -114,7 +114,7 @@ src/vs/platform/registry/common/platform.ts
 
 ## Dependency Injection and TypeScript decorators
 
-Dependency Injection (DI) with [TypeScript decorators](https://www.typescriptlang.org/docs/handbook/decorators.html) is widely used. It is explained in detail below:
+Dependency Injection (DI) with [TypeScript decorators](https://www.typescriptlang.org/docs/handbook/decorators.html) is widely used in the source code of VS Code. It is explained in detail below:
 
 - https://github.com/microsoft/vscode/wiki/Source-Code-Organization#dependency-injection
 
