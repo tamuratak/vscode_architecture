@@ -1,6 +1,8 @@
 
 # Architecture of VS Code
 
+VS Code consists of multiple processes that communicate with each other using inter-process communication (IPC). There is always exactly one main process, one shared process, and one PTY host process. In contrast, a new renderer process and its associated child processes are created for each window.
+
 ```mermaid
 flowchart TB
     MainProcess[Main Process]
