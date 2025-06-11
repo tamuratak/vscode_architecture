@@ -37,7 +37,7 @@ flowchart TB
 
 ## Process startup and boot sequence
 
-The main process creates all processes that are not connected under the extension host. MessagePorts are created and transferred to each process as needed. The steps involved in spawning a new process can vary in several ways; in some instances, other processes may request the main process to create them.
+The main process is responsible for launching all processes that are not directly connected under the extension host, as illustrated in the diagram above. MessagePorts are created and transferred to each process as needed. The steps involved in spawning a new process can vary in several ways; in some instances, other processes may request the main process to create them.
 
 ### Where actually spawned
 
