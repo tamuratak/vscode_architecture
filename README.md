@@ -1,7 +1,7 @@
 
 # Architecture of VS Code
 
-VS Code consists of multiple processes that communicate with each other using inter-process communication (IPC). There is always exactly one main process, one shared process, and one PTY host process. In contrast, a new renderer process and its associated processes are created for each window. 
+VS Code consists of multiple processes that communicate with each other using inter-process communication (IPC). There is always exactly one main process, one shared process, and one PTY host process if a terminal is opend. In contrast, a new renderer process and its associated processes are created for each window. 
 
 By adopting this architecture, VS Code can improve latency in the UI and take advantage of multi-core CPUs by offloading heavy tasks to multiple separate processes.
 
@@ -35,10 +35,9 @@ flowchart TB
     Extension -- (Varies) --- Debugger
 ```
 
+## Process startup and boot sequence
 
-## Creating processes
-
-The main process creates the renderer process, search process, extension host, file watcher process, and PTY host process. MessagePorts are created and transferred to each process as needed. The steps involved in spawning a new process can vary in several ways; in some instances, other processes may request the main process to create them.
+The main process creates all processes that are not connected under the extension host. MessagePorts are created and transferred to each process as needed. The steps involved in spawning a new process can vary in several ways; in some instances, other processes may request the main process to create them.
 
 ### Where actually spawned
 
