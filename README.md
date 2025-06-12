@@ -37,7 +37,7 @@ flowchart TB
 
 ## Process startup and boot sequence
 
-The main process is responsible for launching all processes that are not directly connected under the extension host, as illustrated in the diagram above. MessagePorts are created and transferred to each process as needed. The steps involved in spawning a new process can vary in several ways; in some instances, other processes may request the main process to create them.
+The main process is responsible for launching all processes that are not directly connected under the extension host, as illustrated in the diagram above. MessagePorts for IPC are created in the main process and are transferred to each process as needed. The steps involved in spawning a new process can vary in several ways; in some instances, other processes may request the main process to create them.
 
 ### Where actually spawned
 
@@ -60,9 +60,7 @@ The main process is responsible for launching all processes that are not directl
 
 ### How MessagePorts transfered
 
-Using the Electron API's [utilityProcess.fork](https://www.electronjs.org/docs/latest/api/utility-process#utilityprocessforkmodulepath-args-options) to generate a process enables the transfer of MessagePort via the [postMessage](https://www.electronjs.org/docs/latest/api/utility-process#childpostmessagemessage-transfer) method. This allows the transfer of MessagePort from the main process to each process. By sending a unique string such as 'vscode:startExtensionHostMessagePortResult' with the MessagePort, each process can identify the MessagePort.
-
-- [src/vs/platform/utilityProcess/electron-main/utilityProcess.ts#L427](https://github.com/Microsoft/vscode/blob/708b6aa379c2c9d12c65123c8934ca5a6a29046d/src/vs/platform/utilityProcess/electron-main/utilityProcess.ts#L427)
+Using the Electron API's [utilityProcess.fork](https://www.electronjs.org/docs/latest/api/utility-process#utilityprocessforkmodulepath-args-options) to generate a process enables the transfer of MessagePort via the [postMessage](https://www.electronjs.org/docs/latest/api/utility-process#childpostmessagemessage-transfer) method. This allows the transfer of MessagePort from the main process to each process. For example, see this [link](https://github.com/Microsoft/vscode/blob/708b6aa379c2c9d12c65123c8934ca5a6a29046d/src/vs/platform/utilityProcess/electron-main/utilityProcess.ts#L427). The generated process receives the MessagePort through  [process.parentPort](https://www.electronjs.org/docs/latest/api/parent-port). See another [example](https://github.com/Microsoft/vscode/blob/75db9eb5095097daab33ecfbfc809f94a85ca284/src/vs/base/parts/sandbox/electron-sandbox/preload.ts#L151). The renderer process, on the other hand, uses [ipcRenderer](https://www.electronjs.org/docs/latest/api/ipc-renderer) instead of parentPort; refer to this [example](https://github.com/Microsoft/vscode/blob/0018d20957216c30ea7aaf9cb994fc8fd6b5f30e/src/vs/base/parts/ipc/node/ipc.mp.ts#L64).
 
 ## Source code organization
 
