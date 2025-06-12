@@ -45,7 +45,6 @@ The main process is responsible for launching all processes that are not directl
   - [src/vs/platform/windows/electron-main/windowImpl.ts#L640](https://github.com/microsoft/vscode/blob/1f48d5756c8b17f17a9a3e2dda2aa0ad4e6b7ce3/src/vs/platform/windows/electron-main/windowImpl.ts#L640)
   - [src/vs/platform/windows/electron-main/windowImpl.ts#L1105](https://github.com/Microsoft/vscode/blob/1f48d5756c8b17f17a9a3e2dda2aa0ad4e6b7ce3/src/vs/platform/windows/electron-main/windowImpl.ts#L1105)
 - extension host
-  - [src/vs/platform/utilityProcess/electron-main/utilityProcess.ts#L249](https://github.com/Microsoft/vscode/blob/708b6aa379c2c9d12c65123c8934ca5a6a29046d/src/vs/platform/utilityProcess/electron-main/utilityProcess.ts#L249)
   - [src/vs/platform/extensions/electron-main/extensionHostStarter.ts#L107-L108](https://github.com/Microsoft/vscode/blob/708b6aa379c2c9d12c65123c8934ca5a6a29046d/src/vs/platform/extensions/electron-main/extensionHostStarter.ts#L107-L108)
 - shared process
   - [src/vs/platform/sharedProcess/electron-main/sharedProcess.ts#L173](https://github.com/Microsoft/vscode/blob/708b6aa379c2c9d12c65123c8934ca5a6a29046d/src/vs/platform/sharedProcess/electron-main/sharedProcess.ts#L173)
@@ -120,7 +119,7 @@ Dependency Injection (DI) with [TypeScript decorators](https://www.typescriptlan
 - https://github.com/microsoft/vscode/wiki/Source-Code-Organization#dependency-injection
 
 One of the purposes of using DI is to create services in the correct order. When services depend on each other, it is necessary to generate objects providing those services in the appropriate order.
-The creation of objects is handled by the [InstantiationService](https://github.com/Microsoft/vscode/blob/a5f52063e4622bc318d9c550a682dc5b35ef7f33/src/vs/platform/instantiation/common/instantiationService.ts#L28) class. Each process has a unique `InstantiationService` object, which is created at the very beginning of the startup of each process. See an [example](https://github.com/Microsoft/vscode/blob/8cfb2b0e6c8dd80523711236d89dbead0338420b/src/vs/workbench/browser/workbench.ts#L196) of Renderer Process.
+The creation of objects is handled by the [InstantiationService](https://github.com/Microsoft/vscode/blob/a5f52063e4622bc318d9c550a682dc5b35ef7f33/src/vs/platform/instantiation/common/instantiationService.ts#L28) class. Each process has a unique `InstantiationService` object, which is created at the very beginning of the startup of each process. See this [example](https://github.com/Microsoft/vscode/blob/8cfb2b0e6c8dd80523711236d89dbead0338420b/src/vs/workbench/browser/workbench.ts#L196) of Renderer Process.
 
 The following is the typical example of consuming a service:
 ```ts
@@ -132,7 +131,7 @@ export class SomeClass extends Disposable {
   ) {
 ```
 
-`@IContextKeyService` is a decorator intentionally defined to share the same identifier as the `IContextKeyService` interface for convenience. See an [example](https://github.com/Microsoft/vscode/blob/7d2f5bb1aee0ce20c6259d96b0d81f0aa9f9a0db/src/vs/platform/contextkey/common/contextkey.ts#L2035-L2036).
+`@IContextKeyService` is a decorator intentionally defined to share the same identifier as the `IContextKeyService` interface for convenience. For example, see this [link](https://github.com/Microsoft/vscode/blob/7d2f5bb1aee0ce20c6259d96b0d81f0aa9f9a0db/src/vs/platform/contextkey/common/contextkey.ts#L2035-L2036).
 
 When creating an object of `SomeClass`, the `createInstance` method is used:
 ```ts
@@ -145,14 +144,14 @@ When you want to create an object within a method of `SomeClass`, you call `this
 
 The `registerSingleton` method is used to register the identifier and implementation class with the `instantiationService`.
 The `registerSingleton` method stores these in a module scope variable. 
-This method must be called when the modules are loaded and before the `instantiationService` object is created. See an [example](https://github.com/Microsoft/vscode/blob/74a3f54c07603e67e5eba6a561f8048f269fade8/src/vs/workbench/workbench.common.main.ts#L169-L170).
+This method must be called when the modules are loaded and before the `instantiationService` object is created. See this [example](https://github.com/Microsoft/vscode/blob/74a3f54c07603e67e5eba6a561f8048f269fade8/src/vs/workbench/workbench.common.main.ts#L169-L170).
 
 ```ts
 registerSingleton(IContextKeyService, ContextKeyService, InstantiationType.Delayed);
 ```
 
 Besides using the `registerSingleton` method, a collection of services can be generated together when the `instantiationService` object is created.
-See an [example](https://github.com/Microsoft/vscode/blob/c588828980a0a8abad76f87a73a2819a27be1b8c/src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts#L351).
+For example, see this [link](https://github.com/Microsoft/vscode/blob/c588828980a0a8abad76f87a73a2819a27be1b8c/src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts#L351).
 
 ## RPC (Remote Procedure Call)
 
@@ -165,7 +164,7 @@ To call a method on a service in another process, you first obtain a `Channel` f
 On the service process side, a ChannelServer listens for incoming messages on the MessagePort. When it receives a message, it looks at the `channelName` to determine which service should handle the request. The ChannelServer then forwards the request to the appropriate ServerChannel, which is directly associated with a specific service implementation.
 
 - `ServerChannel`: Each ServerChannel is mapped one-to-one with a service. It knows how to invoke the correct method on the service with the provided arguments.
-- [`ChannelServer`](https://github.com/Microsoft/vscode/blob/2984f68510d7786386c43c992ef0c5d794493837/src/vs/base/parts/ipc/common/ipc.ts#L330): Maintains a mapping from channel names (channelName) to ServerChannels, allowing it to route requests to the correct service. A service can be registered by calling the [`registerChannel`](https://github.com/microsoft/vscode/blob/2984f68510d7786386c43c992ef0c5d794493837/src/vs/base/parts/ipc/common/ipc.ts#L118) method. See an [example](https://github.com/Microsoft/vscode/blob/2984f68510d7786386c43c992ef0c5d794493837/src/vs/code/electron-main/app.ts#L1153).
+- [`ChannelServer`](https://github.com/Microsoft/vscode/blob/2984f68510d7786386c43c992ef0c5d794493837/src/vs/base/parts/ipc/common/ipc.ts#L330): Maintains a mapping from channel names (channelName) to ServerChannels, allowing it to route requests to the correct service. A service can be registered by calling the [`registerChannel`](https://github.com/microsoft/vscode/blob/2984f68510d7786386c43c992ef0c5d794493837/src/vs/base/parts/ipc/common/ipc.ts#L118) method. See this [example](https://github.com/Microsoft/vscode/blob/2984f68510d7786386c43c992ef0c5d794493837/src/vs/code/electron-main/app.ts#L1153).
 
 ### Sequence Example
 
@@ -206,6 +205,9 @@ sequenceDiagram
 - fromService https://github.com/Microsoft/vscode/blob/2984f68510d7786386c43c992ef0c5d794493837/src/vs/base/parts/ipc/common/ipc.ts#L1110
 - toService https://github.com/Microsoft/vscode/blob/2984f68510d7786386c43c992ef0c5d794493837/src/vs/base/parts/ipc/common/ipc.ts#L1188
 
+## Extension Host
+
+TODO
 
 ## Links
 
