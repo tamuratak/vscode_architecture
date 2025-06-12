@@ -49,7 +49,7 @@ The main process is responsible for launching all processes that are not directl
 - shared process
   - [src/vs/platform/sharedProcess/electron-main/sharedProcess.ts#L173](https://github.com/Microsoft/vscode/blob/708b6aa379c2c9d12c65123c8934ca5a6a29046d/src/vs/platform/sharedProcess/electron-main/sharedProcess.ts#L173)
 - watcher
-  - [src/vs/workbench/services/files/electron-sandbox/watcherClient.ts#L36](https://github.com/Microsoft/vscode/blob/708b6aa379c2c9d12c65123c8934ca5a6a29046d/src/vs/workbench/services/files/electron-sandbox/watcherClient.ts#L36)
+  - [src/vs/workbench/services/files/electron-browser/watcherClient.ts#L36](https://github.com/microsoft/vscode/blob/f62c722516b9bc4c782554bffd7abfdb54869c8e/src/vs/workbench/services/files/electron-browser/watcherClient.ts#L36)
 - search
   - [src/vs/workbench/services/search/node/ripgrepTextSearchEngine.ts#L75](https://github.com/Microsoft/vscode/blob/ff48b17c8bac582dfa4deb088dd0bb88c3049d54/src/vs/workbench/services/search/node/ripgrepTextSearchEngine.ts#L75)
 - pty
@@ -59,7 +59,7 @@ The main process is responsible for launching all processes that are not directl
 
 ### How MessagePorts transfered
 
-Using the Electron API's [utilityProcess.fork](https://www.electronjs.org/docs/latest/api/utility-process#utilityprocessforkmodulepath-args-options) to generate a process enables the transfer of MessagePort via the [postMessage](https://www.electronjs.org/docs/latest/api/utility-process#childpostmessagemessage-transfer) method. This allows the transfer of MessagePort from the main process to each process. For example, see this [link](https://github.com/Microsoft/vscode/blob/708b6aa379c2c9d12c65123c8934ca5a6a29046d/src/vs/platform/utilityProcess/electron-main/utilityProcess.ts#L427). The generated process receives the MessagePort through  [process.parentPort](https://www.electronjs.org/docs/latest/api/parent-port). See another [example](https://github.com/Microsoft/vscode/blob/75db9eb5095097daab33ecfbfc809f94a85ca284/src/vs/base/parts/sandbox/electron-sandbox/preload.ts#L151). The renderer process, on the other hand, uses [ipcRenderer](https://www.electronjs.org/docs/latest/api/ipc-renderer) instead of parentPort; refer to this [example](https://github.com/Microsoft/vscode/blob/0018d20957216c30ea7aaf9cb994fc8fd6b5f30e/src/vs/base/parts/ipc/node/ipc.mp.ts#L64).
+Using the Electron API's [utilityProcess.fork](https://www.electronjs.org/docs/latest/api/utility-process#utilityprocessforkmodulepath-args-options) to generate a process enables the transfer of MessagePort via the [postMessage](https://www.electronjs.org/docs/latest/api/utility-process#childpostmessagemessage-transfer) method. This allows the transfer of MessagePort from the main process to each process. For example, see this [link](https://github.com/Microsoft/vscode/blob/708b6aa379c2c9d12c65123c8934ca5a6a29046d/src/vs/platform/utilityProcess/electron-main/utilityProcess.ts#L427). The generated process receives the MessagePort through  [process.parentPort](https://www.electronjs.org/docs/latest/api/parent-port). See another [example](https://github.com/microsoft/vscode/blob/f62c722516b9bc4c782554bffd7abfdb54869c8e/src/vs/base/parts/sandbox/electron-browser/preload.ts#L151). The renderer process, on the other hand, uses [ipcRenderer](https://www.electronjs.org/docs/latest/api/ipc-renderer) instead of parentPort; refer to this [example](https://github.com/Microsoft/vscode/blob/0018d20957216c30ea7aaf9cb994fc8fd6b5f30e/src/vs/base/parts/ipc/node/ipc.mp.ts#L64).
 
 ## Source code organization
 
@@ -88,11 +88,11 @@ The following numbers are aggregated by recursively tracing the imports with a s
 | Renderer Process | 310000 |
 | ExtensionHost Process | 240000 |
 
-When `browser/` and `electron-sandbox/` are parallel as shown below, for that feature, the code from `browser/` runs in the browser, while the code from `electron-sandbox/` runs on the desktop. If only `browser/` exists, the code from `browser/` will run on the desktop as well.
+When `browser/` and `electron-browser/` are parallel as shown below, for that feature, the code from `browser/` runs in the browser, while the code from `electron-browser/` runs on the desktop. If only `browser/` exists, the code from `browser/` will run on the desktop as well.
 
 ```
 src/vs/path/to/feature/browser
-src/vs/path/to/feature/electron-sandbox
+src/vs/path/to/feature/electron-browser
 ```
 
 The "standalone" in `src/vs/editor/standalone` refers to the Monaco editor.
