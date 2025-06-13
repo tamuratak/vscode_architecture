@@ -207,7 +207,7 @@ sequenceDiagram
 
 ## Extension Host
 
-TODO
+- https://github.com/Microsoft/vscode/blob/c235626145490af5a85243b40e5b88ce55e97890/src/vs/workbench/api/common/extHost.api.impl.ts#L127
 
 ## Links
 
