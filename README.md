@@ -208,6 +208,8 @@ sequenceDiagram
 ## Extension Host
 
 - https://github.com/Microsoft/vscode/blob/c235626145490af5a85243b40e5b88ce55e97890/src/vs/workbench/api/common/extHost.api.impl.ts#L127
+- https://github.com/Microsoft/vscode/blob/abf1002a815314045db3d88c43135f1fdf661f3e/src/vs/workbench/api/node/extHost.node.services.ts#L39-L40
+- https://github.com/Microsoft/vscode/blob/abf1002a815314045db3d88c43135f1fdf661f3e/src/vs/workbench/api/common/extHost.common.services.ts#L35-L36
 
 ## Links
 
