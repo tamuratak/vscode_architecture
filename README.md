@@ -119,7 +119,7 @@ Dependency Injection (DI) with [TypeScript decorators](https://www.typescriptlan
 - https://github.com/microsoft/vscode/wiki/Source-Code-Organization#dependency-injection
 
 One of the purposes of using DI is to create services in the correct order. When services depend on each other, it is necessary to generate objects providing those services in the appropriate order.
-The creation of objects is handled by the [InstantiationService](https://github.com/Microsoft/vscode/blob/a5f52063e4622bc318d9c550a682dc5b35ef7f33/src/vs/platform/instantiation/common/instantiationService.ts#L28) class. Each process has a unique `InstantiationService` object, which is created at the very beginning of the startup of each process. See this [example](https://github.com/Microsoft/vscode/blob/8cfb2b0e6c8dd80523711236d89dbead0338420b/src/vs/workbench/browser/workbench.ts#L196) of Renderer Process.
+The creation of objects is handled by the [InstantiationService](https://github.com/Microsoft/vscode/blob/a5f52063e4622bc318d9c550a682dc5b35ef7f33/src/vs/platform/instantiation/common/instantiationService.ts#L28) class. Each process has at least one `InstantiationService` object, which is created at the very beginning of the startup of each process. See this [example](https://github.com/Microsoft/vscode/blob/8cfb2b0e6c8dd80523711236d89dbead0338420b/src/vs/workbench/browser/workbench.ts#L196) of the renderer process. Another [example](https://github.com/Microsoft/vscode/blob/7cc3d44323cd61f3368da74655d4ca1216665a3f/src/vs/workbench/api/common/extensionHostMain.ts#L188) of the extension host process.
 
 The following is the typical example of consuming a service:
 ```ts
@@ -208,6 +208,21 @@ sequenceDiagram
 ## Extension Host
 
 TODO
+
+- extension host の概要
+- API の特殊性(理由は不明)
+- 拡張の load 方法. ランタイムは Node.js ではない.
+
+
+- https://github.com/Microsoft/vscode/blob/c235626145490af5a85243b40e5b88ce55e97890/src/vs/workbench/api/common/extHost.api.impl.ts#L127
+- https://github.com/Microsoft/vscode/blob/abf1002a815314045db3d88c43135f1fdf661f3e/src/vs/workbench/api/node/extHost.node.services.ts#L39-L40
+- https://github.com/Microsoft/vscode/blob/abf1002a815314045db3d88c43135f1fdf661f3e/src/vs/workbench/api/common/extHost.common.services.ts#L35-L36
+- https://github.com/Microsoft/vscode/blob/15260e72ae15426bf6093b1ad97e7f29bbc2397e/src/vs/workbench/api/common/extHostRequireInterceptor.ts#L62
+- https://github.com/Microsoft/vscode/blob/15260e72ae15426bf6093b1ad97e7f29bbc2397e/src/vs/workbench/api/common/extHostRequireInterceptor.ts#L162
+
+_load override
+
+- https://github.com/Microsoft/vscode/blob/ef455e8f139a7b18e936eb8499c321a8c5aa62d1/src/vs/workbench/api/node/extHostExtensionService.ts#L36
 
 ## Links
 
