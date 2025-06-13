@@ -210,6 +210,12 @@ sequenceDiagram
 - https://github.com/Microsoft/vscode/blob/c235626145490af5a85243b40e5b88ce55e97890/src/vs/workbench/api/common/extHost.api.impl.ts#L127
 - https://github.com/Microsoft/vscode/blob/abf1002a815314045db3d88c43135f1fdf661f3e/src/vs/workbench/api/node/extHost.node.services.ts#L39-L40
 - https://github.com/Microsoft/vscode/blob/abf1002a815314045db3d88c43135f1fdf661f3e/src/vs/workbench/api/common/extHost.common.services.ts#L35-L36
+- https://github.com/Microsoft/vscode/blob/15260e72ae15426bf6093b1ad97e7f29bbc2397e/src/vs/workbench/api/common/extHostRequireInterceptor.ts#L62
+- https://github.com/Microsoft/vscode/blob/15260e72ae15426bf6093b1ad97e7f29bbc2397e/src/vs/workbench/api/common/extHostRequireInterceptor.ts#L162
+
+_load override
+
+- https://github.com/Microsoft/vscode/blob/ef455e8f139a7b18e936eb8499c321a8c5aa62d1/src/vs/workbench/api/node/extHostExtensionService.ts#L36
 
 ## Links
 
