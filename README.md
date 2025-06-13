@@ -119,7 +119,7 @@ Dependency Injection (DI) with [TypeScript decorators](https://www.typescriptlan
 - https://github.com/microsoft/vscode/wiki/Source-Code-Organization#dependency-injection
 
 One of the purposes of using DI is to create services in the correct order. When services depend on each other, it is necessary to generate objects providing those services in the appropriate order.
-The creation of objects is handled by the [InstantiationService](https://github.com/Microsoft/vscode/blob/a5f52063e4622bc318d9c550a682dc5b35ef7f33/src/vs/platform/instantiation/common/instantiationService.ts#L28) class. Each process has a unique `InstantiationService` object, which is created at the very beginning of the startup of each process. See this [example](https://github.com/Microsoft/vscode/blob/8cfb2b0e6c8dd80523711236d89dbead0338420b/src/vs/workbench/browser/workbench.ts#L196) of Renderer Process.
+The creation of objects is handled by the [InstantiationService](https://github.com/Microsoft/vscode/blob/a5f52063e4622bc318d9c550a682dc5b35ef7f33/src/vs/platform/instantiation/common/instantiationService.ts#L28) class. Each process has at least one `InstantiationService` object, which is created at the very beginning of the startup of each process. See this [example](https://github.com/Microsoft/vscode/blob/8cfb2b0e6c8dd80523711236d89dbead0338420b/src/vs/workbench/browser/workbench.ts#L196) of the renderer process. Another [example](https://github.com/Microsoft/vscode/blob/7cc3d44323cd61f3368da74655d4ca1216665a3f/src/vs/workbench/api/common/extensionHostMain.ts#L188) of the extension host process.
 
 The following is the typical example of consuming a service:
 ```ts
