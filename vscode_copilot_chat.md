@@ -11,3 +11,6 @@
 - chatParticipantPrivate mappedEditsProvider https://github.com/microsoft/vscode-copilot-chat/blob/2173cc58d67cb533facd6a936f99b200346617b0/package.json#L108C4-L108C23
 
 - chatParticipantPrivate flag https://github.com/Microsoft/vscode/blob/0ac8174fbcf3ac0bfb41b32e498d336f604dd9af/src/vs/workbench/api/common/extHostLanguageModelTools.ts#L147
+
+- prompt renderer を再実装しているように見えるのは instantiationService を使いたいから仕方なく
+- chat history は turn と呼ばれる単位に変換している
